@@ -2,27 +2,28 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-login') // Use Jenkins credential ID
+        DOCKERHUB_CREDENTIALS = credentials('c5ac45c8-7524-43ad-8c4d-205b35420beb') // Use Jenkins credential ID
         IMAGE_NAME = 'renukashweta/devops-app'
     }
 
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/<your-username>/<your-repo>.git'
+                git 'https://github.com/RenukaGaidhane/devops-project.git'
+
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker build -t $IMAGE_NAME:latest .'
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
                 sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                sh 'docker push $IMAGE_NAME'
+                sh 'docker push $IMAGE_NAME:latest'
             }
         }
 
